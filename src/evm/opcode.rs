@@ -12,7 +12,7 @@ pub enum OpCode {
 }
 
 impl OpCode {
-    fn describe(&self) {
+    pub fn describe(&self) {
         match self {
             OpCode::STOP(line) => println!("0x{:x}\tSTOP\tHalts execution", line),
             OpCode::ADD(line) => println!("0x{:x}\tADD\tAddition operation", line),
@@ -20,6 +20,12 @@ impl OpCode {
             OpCode::PUSH1(line, x) => println!("0x{:x}\tPUSH1\tPlace 1-byte item on the stack 0x{:x}", line, x),
             OpCode::PUSH2(line, x0, x1) => println!("0x{:x}\tPUSH2\tPlace 2-bytes item on the stack 0x{:x} 0x{:x}", line, x0, x1),
             _ => println!("Unknown opcode")
+        }
+    }
+
+    pub fn step(&self) {
+        match self {
+            
         }
     }
 }

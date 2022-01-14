@@ -17,7 +17,7 @@ fn hex_decoder(hex: &str) -> Result<Vec<u8>, ParseError> {
     Ok(result)
 }
 
-pub(crate) struct VM {
+pub struct VM {
     hex_code: Vec<u8>,
     program_instruction: usize
 }
@@ -35,8 +35,8 @@ impl VM {
         Ok(VM{ hex_code: bytes, program_instruction: 0})
     }
 
-    fn next(&mut self) -> Option<OpCode> {
-
+    pub fn next(&mut self) -> Option<OpCode> {
+        
         //prevent out of bound
         if self.program_instruction > self.hex_code.len() {
             return Some(OpCode::EOF)
@@ -67,8 +67,10 @@ impl VM {
                 self.program_instruction += 3;
                 Some(OpCode::PUSH2(self.program_instruction, value0, value1))
             },
-            _ => { self.program_instruction += 1; None}
-    
+            _ => { 
+                self.program_instruction += 1; 
+                None
+            },
         }
     }
     

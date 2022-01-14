@@ -1,6 +1,6 @@
 mod evm;
 use evm::{
-    opcode,
+    opcode::{self, OpCode},
     vm
 };
 use std::{
@@ -10,12 +10,18 @@ use std::{
     env
 };
 
-fn debug(machine: &vm::VM) {
-
-}
-
-fn execute(machine: &vm::VM) {
-
+fn execute(machine: &mut vm::VM, debug: bool) {
+    loop {
+        match machine.next() {
+            Some(x) => if !debug {
+                x.step()
+            }else {
+                x.describe()
+            }
+            _ => panic!("Reached end of the line"),
+            None => panic!("Opcode non-recognizable"),
+        }
+    }
 }
 
 
@@ -26,12 +32,12 @@ fn main() {
     let action = args[0].clone();
     let filename = args[1].clone();
 
-    // loading the vm 
+    // initialize the vm 
     let mut vm = vm::VM::new(&filename).unwrap();
 
     match &action[..] {
-        "debug" => debug(&mut vm),
-        "execute" => execute(&mut vm),
+        "debug" => execute(&mut vm, true),
+        "execute" => execute(&mut vm, false),
         _ => return
     }
 
