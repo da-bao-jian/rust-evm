@@ -1,4 +1,5 @@
 #[allow(unused_variables)]
+#[derive(PartialEq, Debug)]
 pub enum OpCode {
     STOP(usize), // 0x00
     ADD(usize), // 0x01
@@ -12,6 +13,7 @@ pub enum OpCode {
 }
 
 impl OpCode {
+    // function for debuging, which prints opcode to the terminal
     pub fn describe(&self) {
         match self {
             OpCode::STOP(line) => println!("0x{:x}\tSTOP\tHalts execution", line),
@@ -23,9 +25,4 @@ impl OpCode {
         }
     }
 
-    pub fn step(&self) {
-        match self {
-            
-        }
-    }
 }

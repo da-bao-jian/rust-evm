@@ -1,24 +1,24 @@
 mod evm;
 use evm::{
-    opcode::{self, OpCode},
-    vm
+    vm, opcode::OpCode::EOF
 };
 use std::{
-    fs,
-    error::Error,
-    string::ParseError,
     env
 };
 
 fn execute(machine: &mut vm::VM, debug: bool) {
     loop {
         match machine.next() {
-            Some(x) => if !debug {
-                x.step()
-            }else {
+            Some(x) => if !debug && x != EOF {
+                // for execution
+                machine.step()
+            } else if debug && x != EOF {
+                // for debugging
                 x.describe()
+            } else {
+                println!("reached the end of the line");
+                return
             }
-            _ => panic!("Reached end of the line"),
             None => panic!("Opcode non-recognizable"),
         }
     }
